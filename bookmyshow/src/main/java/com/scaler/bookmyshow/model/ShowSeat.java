@@ -9,6 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Table(name = "show_seats")
 public class ShowSeat extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "show_id")

@@ -1,9 +1,6 @@
 package com.scaler.bookmyshow.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +9,7 @@ import java.util.Scanner;
 @Getter
 @Setter
 @Entity
+@Table(name = "seats")
 public class Seat extends BaseModel {
     @Column(name = "seat_number")
     private String seatNumber;
