@@ -1,5 +1,6 @@
 package com.scaler.bookmyshow.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,5 +9,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Movie extends BaseModel {
+    @Column(name = "name")
     private String name;
 }

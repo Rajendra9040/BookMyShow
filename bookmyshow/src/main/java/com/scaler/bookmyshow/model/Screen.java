@@ -10,11 +10,21 @@ import java.util.List;
 @Setter
 @Entity
 public class Screen extends BaseModel{
+    @Column(name = "name")
     private String name;
+
     @ManyToOne
+    @JoinColumn(name = "theater_id")
     private Theater theater;
-    @Enumerated(EnumType.STRING)
+
+    @ManyToMany
+    @JoinTable(
+            name = "screen_features",
+            joinColumns = @JoinColumn(name = "screen_id"),
+            inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
     private List<Feature> features;
+
     @OneToMany(mappedBy = "screen")
     private List<Seat> seats;
 }

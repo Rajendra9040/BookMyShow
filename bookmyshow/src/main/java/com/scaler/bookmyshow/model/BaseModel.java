@@ -1,9 +1,6 @@
 package com.scaler.bookmyshow.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +11,13 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseModel {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "created_at")
     private Date createdAt;
+
+    @Column(name = "modified_at")
     private Date modifiedAt;
 }

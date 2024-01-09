@@ -13,9 +13,15 @@ public class ShowSeat extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "show_id")
     private Show show;
+
     @ManyToOne
+    @JoinColumn(name = "seat_id")
     private Seat seat;
-    @Enumerated(EnumType.STRING)
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "show_seat_status_id")
     private ShowSeatStatus showSeatStatus;
+
+    @Column(name = "locked_at")
     private Date lockedAt;
 }

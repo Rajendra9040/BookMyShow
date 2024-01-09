@@ -1,9 +1,6 @@
 package com.scaler.bookmyshow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,10 +9,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "payments")
 public class Payment extends BaseModel{
+    @Column(name = "reference_number")
     private String referenceNumber;
+
+    @Column(name = "amount")
     private int amount;
-    @Enumerated(EnumType.STRING)
+
+    @Column(name = "payment_provider_id")
+    @Enumerated(EnumType.ORDINAL)
     private PaymentProvider paymentProvider;
-    @Enumerated(EnumType.STRING)
+
+    @Column(name = "payment_status_id")
+    @Enumerated(EnumType.ORDINAL)
     private PaymentStatus paymentStatus;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }
