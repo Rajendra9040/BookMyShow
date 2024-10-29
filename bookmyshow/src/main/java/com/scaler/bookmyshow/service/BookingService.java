@@ -1,6 +1,8 @@
 package com.scaler.bookmyshow.service;
 
 import com.scaler.bookmyshow.model.*;
+import com.scaler.bookmyshow.model.enums.BookingStatus;
+import com.scaler.bookmyshow.model.enums.ShowSeatStatus;
 import com.scaler.bookmyshow.repository.BookingRepository;
 import com.scaler.bookmyshow.repository.ShowRepository;
 import com.scaler.bookmyshow.repository.ShowSeatRepository;

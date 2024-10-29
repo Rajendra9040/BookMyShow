@@ -1,0 +1,28 @@
+package com.scaler.bookmyshow.mapper;
+
+import com.scaler.bookmyshow.dto.SignUpRequest;
+import com.scaler.bookmyshow.model.User;
+import javax.annotation.processing.Generated;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2024-06-08T00:27:03+0530",
+    comments = "version: 1.6.0.Beta1, compiler: javac, environment: Java 20.0.2 (Oracle Corporation)"
+)
+public class UserMapperImpl implements UserMapper {
+
+    @Override
+    public User mapUserFromSignUpRequest(SignUpRequest request) {
+        if ( request == null ) {
+            return null;
+        }
+
+        User.UserBuilder user = User.builder();
+
+        user.name( request.getName() );
+        user.email( request.getEmail() );
+        user.password( request.getPassword() );
+
+        return user.build();
+    }
+}

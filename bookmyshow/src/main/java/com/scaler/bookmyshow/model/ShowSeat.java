@@ -1,5 +1,6 @@
 package com.scaler.bookmyshow.model;
 
+import com.scaler.bookmyshow.model.enums.ShowSeatStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class ShowSeat extends BaseModel {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "show_seat_status_id")
     private ShowSeatStatus showSeatStatus;
 

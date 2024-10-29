@@ -5,11 +5,9 @@ import com.scaler.bookmyshow.model.Show;
 import com.scaler.bookmyshow.model.ShowSeat;
 import com.scaler.bookmyshow.model.ShowSeatType;
 import com.scaler.bookmyshow.repository.ShowSeatTypeRepository;
-import jakarta.persistence.Index;
-import lombok.Setter;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

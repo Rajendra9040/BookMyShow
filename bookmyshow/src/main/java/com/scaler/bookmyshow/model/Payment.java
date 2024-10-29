@@ -1,5 +1,7 @@
 package com.scaler.bookmyshow.model;
 
+import com.scaler.bookmyshow.model.enums.PaymentProvider;
+import com.scaler.bookmyshow.model.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

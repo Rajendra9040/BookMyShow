@@ -1,6 +1,7 @@
 package com.scaler.bookmyshow.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.scaler.bookmyshow.model.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "bookings")
-public class Booking extends BaseModel{
+public class Booking extends BaseModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
