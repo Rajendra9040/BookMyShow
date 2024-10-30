@@ -35,6 +35,4 @@ public class User extends BaseModel {
     @Column(name = "is_active")
     private Boolean isActive;
 
-
-
 }
