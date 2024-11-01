@@ -26,6 +26,7 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(applicationConfig.createUserDetails(user));
         saveToken(user.getId(), jwtToken);
         return SignUpResponse.builder()
+            .email(user.getEmail())
             .token(jwtToken)
             .message("User registered successfully!")
             .build();

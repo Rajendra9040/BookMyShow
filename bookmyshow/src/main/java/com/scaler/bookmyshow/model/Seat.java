@@ -1,26 +1,28 @@
 package com.scaler.bookmyshow.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Scanner;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "seats")
 public class Seat extends BaseModel {
     @Column(name = "seat_number")
     private String seatNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "screen_id")
-    private Screen screen;
+    @Column(name = "screen_id")
+    private Long screenId;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_type_id")
-    private SeatType seatType;
+    @Column(name = "seat_type_id")
+    private Long seatTypeId;
 
     @Column(name = "row_value")
     private int rowValue;

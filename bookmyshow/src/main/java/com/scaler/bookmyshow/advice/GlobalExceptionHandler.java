@@ -10,10 +10,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ProgramException.class})
-    public ResponseEntity<CommonResponse> handleException(ProgramException exception) {
+    public ResponseEntity<CommonResponse> handleProgramException(ProgramException exception) {
         CommonResponse response = new CommonResponse().setMessage(exception.getMessage())
             .setStatus(exception.getStatus());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ResponseEntity<CommonResponse> handleRuntimeException(RuntimeException exception) {
+        CommonResponse response = new CommonResponse().setMessage(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

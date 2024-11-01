@@ -1,23 +1,23 @@
 package com.scaler.bookmyshow.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "theaters")
 public class Theater extends BaseModel {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "region_id")
-    private Region region;
-
-    @OneToMany(mappedBy = "theater")
-    private List<Screen> screens;
+    @Column(name = "region_id")
+    private Long regionId;
 }

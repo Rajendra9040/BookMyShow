@@ -1,5 +1,7 @@
 package com.scaler.bookmyshow.service;
 
+import com.scaler.bookmyshow.advice.exception.ProgramException;
+import com.scaler.bookmyshow.dto.BookMovieRequestDto;
 import com.scaler.bookmyshow.model.*;
 import com.scaler.bookmyshow.model.enums.BookingStatus;
 import com.scaler.bookmyshow.model.enums.ShowSeatStatus;
@@ -8,6 +10,7 @@ import com.scaler.bookmyshow.repository.BookingRepository;
 import com.scaler.bookmyshow.repository.ShowRepository;
 import com.scaler.bookmyshow.repository.ShowSeatRepository;
 import com.scaler.bookmyshow.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
@@ -27,74 +31,45 @@ public class BookingService {
     private final ShowSeatRepository showSeatRepository;
     private final PriceCalculator priceCalculator;
 
-    @Autowired
-    public BookingService(
-            BookingRepository bookingRepository,
-            UserRepository userRepository,
-            ShowRepository showRepository,
-            ShowSeatRepository showSeatRepository,
-            PriceCalculator priceCalculator
-    ) {
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-        this.showRepository = showRepository;
-        this.showSeatRepository = showSeatRepository;
-        this.priceCalculator = priceCalculator;
+    public Booking bookMovie(BookMovieRequestDto bookMovieRequestDto) {
+        Long userId = bookMovieRequestDto.getUserId();
+        Long showId = bookMovieRequestDto.getShowId();
+        List<Long> showSeatIds = bookMovieRequestDto.getShowSeatIds();
+        User user = userRepository.findById(userId).orElseThrow(()-> new ProgramException(String.format("User with id: %s not present!", userId)));
+        Show show = showRepository.findById(showId).orElseThrow(()-> new ProgramException(String.format("Show with id: %s not present!", showId)));
+
+        // Transaction start here
+        List<ShowSeat> bookedShowSeats = bookSeats(showSeatIds);
+        // release lock here
+
+        Booking booking = new Booking();
+        booking.setUserId(user.getId());
+        booking.setBookedAt(new Date());
+        booking.setBookingStatus(BookingStatus.PENDING);
+        booking.setAmount(priceCalculator.calculatePrice(bookedShowSeats, show));
+        Booking finalBooking = bookingRepository.save(booking);;
+        bookedShowSeats.forEach(bss -> bss.setBookingId(finalBooking.getId()));
+        showSeatRepository.saveAll(bookedShowSeats);
+        // save and update the Payments here
+        return finalBooking;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Booking bookMovie(
-            Long userId,
-            Long showId,
-            List<Long> showSeatIds
-
-    ) {
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("User not exist!");
-        }
-
-        User bookedBy = userOptional.get();
-        Optional<Show> showOptional = showRepository.findById(showId);
-
-        if (showOptional.isEmpty()) {
-            throw  new RuntimeException("Show not found!");
-        }
-
-        Show bookedShow = showOptional.get();
-
-        // Transaction start here
+    public List<ShowSeat> bookSeats(List<Long> showSeatIds) {
         List<ShowSeat> showSeatsToBeBooked = showSeatRepository.findAllById(showSeatIds);
-
         for (ShowSeat showSeat: showSeatsToBeBooked) {
             if (!(showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE) ||
-                showSeat.getShowSeatStatus().equals(ShowSeatStatus.BLOCKED) &&
-                Duration.between(showSeat.getLockedAt().toInstant(), new Date().toInstant()).toMinutes()>15)
+                (showSeat.getShowSeatStatus().equals(ShowSeatStatus.BLOCKED) &&
+                    Duration.between(showSeat.getLockedAt().toInstant(), new Date().toInstant()).toMinutes()>15))
             ) {
-                throw new RuntimeException("Selected seats are not available!");
+                throw new ProgramException("Selected seats are not available!");
             }
         }
-
         List<ShowSeat> savedShowSeats = new ArrayList<>();
-
         for (ShowSeat showSeat: showSeatsToBeBooked) {
             showSeat.setShowSeatStatus(ShowSeatStatus.BLOCKED);
             savedShowSeats.add(showSeatRepository.save(showSeat));
         }
-
-        // release lock here
-        Booking booking = new Booking();
-        booking.setUser(bookedBy);
-        booking.setShowSeats(savedShowSeats);
-        booking.setBookedAt(new Date());
-        booking.setBookingStatus(BookingStatus.PENDING);
-        booking.setPayments(new ArrayList<>());
-        booking.setAmount(priceCalculator.calculatePrice(savedShowSeats, bookedShow));
-        booking.setShow(bookedShow);
-
-        booking = bookingRepository.save(booking);
-
-        return booking;
+        return savedShowSeats;
     }
 }

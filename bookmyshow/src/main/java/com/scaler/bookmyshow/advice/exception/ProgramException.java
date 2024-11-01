@@ -5,12 +5,8 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@Setter
 public class ProgramException extends RuntimeException {
-    private String message;
-    private HttpStatus status;
-
-    public ProgramException() {this("Something went wrong!");}
+    private final HttpStatus status;
     public ProgramException(String message) {
         this(message, HttpStatus.BAD_REQUEST);
     }
@@ -19,6 +15,4 @@ public class ProgramException extends RuntimeException {
         super(message);
         this.status = status;
     }
-
-
 }

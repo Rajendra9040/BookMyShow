@@ -2,7 +2,9 @@ package com.scaler.bookmyshow.model;
 
 import com.scaler.bookmyshow.model.enums.ShowSeatStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -10,15 +12,18 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "show_seats")
 public class ShowSeat extends BaseModel {
-    @ManyToOne
-    @JoinColumn(name = "show_id")
-    private Show show;
+    @Column(name = "show_id")
+    private Long showId;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_id")
-    private Seat seat;
+    @Column(name = "seat_id")
+    private Long seat_id;
+
+    @Column(name = "booking_id")
+    private Long bookingId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "show_seat_status_id")
@@ -26,4 +31,5 @@ public class ShowSeat extends BaseModel {
 
     @Column(name = "locked_at")
     private Date lockedAt;
+
 }
