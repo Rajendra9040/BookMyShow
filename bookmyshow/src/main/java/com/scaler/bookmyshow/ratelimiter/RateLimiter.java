@@ -18,13 +18,13 @@ public class RateLimiter {
     private final long timeIntervalInMillis;
     private final Deque<LocalDateTime> queue;
 //    private static final Map<ExternalProvider, RateLimiter> rateLimiterRegistry = new ConcurrentHashMap<>();
-
+//
 //    private RateLimiter(ExternalProvider externalProvider) {
 //        this.timeIntervalInMillis = externalProvider.getTimeIntervalInMillis();
 //        this.executorService = Executors.newSingleThreadScheduledExecutor();
 //        this.queue = new ConcurrentLinkedDeque<>();
 //    }
-
+//
 //    public static RateLimiter getInstance(ExternalProvider externalProvider) {
 //        return rateLimiterRegistry.computeIfAbsent(externalProvider, provider -> new RateLimiter(provider));
 //    }

@@ -1,12 +1,12 @@
 package com.scaler.bookmyshow.mapper;
 
 import com.scaler.bookmyshow.dto.SignUpRequest;
-import com.scaler.bookmyshow.model.User;
+import com.scaler.bookmyshow.model.userAuth.User;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-08T00:27:03+0530",
+    date = "2024-11-01T12:04:37+0530",
     comments = "version: 1.6.0.Beta1, compiler: javac, environment: Java 20.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -21,7 +21,6 @@ public class UserMapperImpl implements UserMapper {
 
         user.name( request.getName() );
         user.email( request.getEmail() );
-        user.password( request.getPassword() );
 
         return user.build();
     }

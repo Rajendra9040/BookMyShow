@@ -1,6 +1,6 @@
 package com.scaler.bookmyshow.repository;
 
-import com.scaler.bookmyshow.model.User;
+import com.scaler.bookmyshow.model.userAuth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

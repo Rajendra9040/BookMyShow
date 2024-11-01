@@ -1,7 +1,7 @@
 package com.scaler.bookmyshow.mapper;
 
 import com.scaler.bookmyshow.dto.SignUpRequest;
-import com.scaler.bookmyshow.model.User;
+import com.scaler.bookmyshow.model.userAuth.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

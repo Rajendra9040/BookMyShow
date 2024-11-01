@@ -2,6 +2,7 @@ package com.scaler.bookmyshow.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.scaler.bookmyshow.model.enums.BookingStatus;
+import com.scaler.bookmyshow.model.userAuth.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
