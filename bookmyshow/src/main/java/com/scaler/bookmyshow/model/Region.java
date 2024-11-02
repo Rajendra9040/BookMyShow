@@ -20,7 +20,4 @@ import java.util.List;
 public class Region extends BaseModel {
     @Column(name = "name")
     private String name;
-
-    @OneToMany(mappedBy = "region")
-    private List<Theater> theaters;
 }

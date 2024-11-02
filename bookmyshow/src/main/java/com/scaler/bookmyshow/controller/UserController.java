@@ -1,4 +1,4 @@
-package com.scaler.bookmyshow.controller.auth;
+package com.scaler.bookmyshow.controller;
 
 
 import com.scaler.bookmyshow.dto.CommonResponse;

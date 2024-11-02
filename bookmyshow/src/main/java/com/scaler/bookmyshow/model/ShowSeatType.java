@@ -13,13 +13,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "show_seat_types")
 public class ShowSeatType extends BaseModel{
-    @ManyToOne
-    @JoinColumn(name = "show_id")
-    private Show show;
+    @Column(name = "show_id")
+    private Long showId;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_type_id")
-    private SeatType seatType;
+    @Column(name = "seat_type_id")
+    private Long seatTypeId;
 
     @Column(name = "price")
     private int price;

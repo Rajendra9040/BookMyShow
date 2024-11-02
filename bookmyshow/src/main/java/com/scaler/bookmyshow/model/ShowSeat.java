@@ -20,7 +20,7 @@ public class ShowSeat extends BaseModel {
     private Long showId;
 
     @Column(name = "seat_id")
-    private Long seat_id;
+    private Long seatId;
 
     @Column(name = "booking_id")
     private Long bookingId;

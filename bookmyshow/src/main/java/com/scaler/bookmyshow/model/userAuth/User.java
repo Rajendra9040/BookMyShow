@@ -39,4 +39,7 @@ public class User extends BaseModel {
     @Column(name = "is_verified")
     private Boolean isVerified;
 
+    @Column(name = "lang_key")
+    private String langKey;
+
 }

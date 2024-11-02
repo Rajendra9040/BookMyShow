@@ -2,7 +2,9 @@ package com.scaler.bookmyshow.service;
 
 import com.scaler.bookmyshow.advice.exception.ProgramException;
 import com.scaler.bookmyshow.dto.BookMovieRequestDto;
-import com.scaler.bookmyshow.model.*;
+import com.scaler.bookmyshow.model.Booking;
+import com.scaler.bookmyshow.model.Show;
+import com.scaler.bookmyshow.model.ShowSeat;
 import com.scaler.bookmyshow.model.enums.BookingStatus;
 import com.scaler.bookmyshow.model.enums.ShowSeatStatus;
 import com.scaler.bookmyshow.model.userAuth.User;
@@ -11,7 +13,6 @@ import com.scaler.bookmyshow.repository.ShowRepository;
 import com.scaler.bookmyshow.repository.ShowSeatRepository;
 import com.scaler.bookmyshow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class BookingService {
         Booking finalBooking = bookingRepository.save(booking);;
         bookedShowSeats.forEach(bss -> bss.setBookingId(finalBooking.getId()));
         showSeatRepository.saveAll(bookedShowSeats);
-        // save and update the Payments here
+        //ToDo: save and update the Payments here
         return finalBooking;
     }
 
