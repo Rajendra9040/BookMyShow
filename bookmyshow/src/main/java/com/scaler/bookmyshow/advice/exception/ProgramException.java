@@ -15,4 +15,8 @@ public class ProgramException extends RuntimeException {
         super(message);
         this.status = status;
     }
+    public ProgramException(String message, Throwable e) {
+        super(message, e);
+        this.status = HttpStatus.BAD_REQUEST;
+    }
 }

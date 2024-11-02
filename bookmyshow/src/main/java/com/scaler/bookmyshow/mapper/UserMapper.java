@@ -4,8 +4,6 @@ import com.scaler.bookmyshow.dto.SignUpRequest;
 import com.scaler.bookmyshow.model.userAuth.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 

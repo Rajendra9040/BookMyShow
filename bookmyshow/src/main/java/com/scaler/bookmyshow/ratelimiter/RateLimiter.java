@@ -1,33 +1,37 @@
 package com.scaler.bookmyshow.ratelimiter;
 
+import com.scaler.bookmyshow.advice.exception.ProgramException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 @RequiredArgsConstructor
 public class RateLimiter {
     private final ScheduledExecutorService executorService;
-    private final long timeIntervalInMillis;
+    private final long timeIntervalInMillis = 100L;
     private final Deque<LocalDateTime> queue;
-//    private static final Map<ExternalProvider, RateLimiter> rateLimiterRegistry = new ConcurrentHashMap<>();
-//
-//    private RateLimiter(ExternalProvider externalProvider) {
-//        this.timeIntervalInMillis = externalProvider.getTimeIntervalInMillis();
-//        this.executorService = Executors.newSingleThreadScheduledExecutor();
-//        this.queue = new ConcurrentLinkedDeque<>();
-//    }
-//
-//    public static RateLimiter getInstance(ExternalProvider externalProvider) {
-//        return rateLimiterRegistry.computeIfAbsent(externalProvider, provider -> new RateLimiter(provider));
-//    }
+    private static final ConcurrentHashMap<String, RateLimiter> rateLimiterRegistry = new ConcurrentHashMap<>();
+
+    private RateLimiter(String key) {
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
+        this.queue = new ConcurrentLinkedDeque<>();
+    }
+
+    public static RateLimiter getInstance(String key) {
+        return rateLimiterRegistry.computeIfAbsent(key, RateLimiter::new);
+    }
 
     public <T> ScheduledFuture<T> scheduleTask(Callable<T> task) {
         long delay = getDelay();
@@ -35,9 +39,8 @@ public class RateLimiter {
             try {
                 return task.call();
             } catch (Exception e) {
-                // Use proper logging instead of printStackTrace
-                // LoggerFactory.getLogger(RateLimiter.class).error("Task execution failed", e);
-                throw new RuntimeException(e);
+                log.error("Error while running the task. {}", e.getMessage());
+                throw new ProgramException(e.getMessage(), e);
             }
         }, delay, TimeUnit.MILLISECONDS);
     }
@@ -48,8 +51,7 @@ public class RateLimiter {
             try {
                 task.run();
             } catch (Exception e) {
-                // Use proper logging instead of printStackTrace
-                // LoggerFactory.getLogger(RateLimiter.class).error("Task execution failed", e);
+                log.error("Error while running the task. {}", e.getMessage());
             }
         }, delay, TimeUnit.MILLISECONDS);
     }
@@ -83,12 +85,5 @@ public class RateLimiter {
             Thread.currentThread().interrupt();
         }
 
-    }
-
-    public static void main(String[] args) {
-        AtomicReference<Long> atomicNum = new AtomicReference<>();
-        atomicNum.set(10L);
-        System.out.println(atomicNum);
-        System.out.println(Optional.of(10L).get());
     }
 }
