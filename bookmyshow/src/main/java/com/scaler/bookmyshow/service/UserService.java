@@ -13,6 +13,7 @@ import com.scaler.bookmyshow.repository.UserRoleRepository;
 import com.scaler.bookmyshow.utils.BMSConstant;
 import com.scaler.bookmyshow.utils.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -60,15 +61,16 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException(String.format("User not found for id %s", id)));
     }
 
+    @Cacheable(value = "users", key = "#email")
     public User getUser(String email) {
-        User user = (User) redisTemplate.opsForHash().get("USER", "USER_" + email);
-        if (Objects.nonNull(user)) {
-            return user;
-        }
-        user = userRepository.findByEmail(email)
+//        User user = (User) redisTemplate.opsForHash().get("USER", "USER_" + email);
+//        if (Objects.nonNull(user)) {
+//            return user;
+//        }
+        return userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException(String.format("User not found for email %s", email)));
-        redisTemplate.opsForHash().put("USER", "USER_" + email, user);
-        return user;
+//        redisTemplate.opsForHash().put("USER", "USER_" + email, user);
+//        return user;
     }
 
     public User getUser(String email, String password) {

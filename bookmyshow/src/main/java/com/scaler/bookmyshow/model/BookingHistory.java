@@ -21,8 +21,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "booking")
-public class Booking extends BaseModel {
+@Table(name = "booking_history")
+public class BookingHistory extends BaseModel {
     @Column(name = "user_id")
     private Long userId;
 
