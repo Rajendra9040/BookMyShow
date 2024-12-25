@@ -56,6 +56,7 @@ public class UserService {
         return createUser;
     }
 
+    @Cacheable(value = "users", key = "#id")
     public User getUser(Long id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException(String.format("User not found for id %s", id)));
